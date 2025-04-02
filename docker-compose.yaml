@@ -1,0 +1,38 @@
+ services:
+  comfyui:
+    image: sd-comfy
+    container_name: comfy-ui
+    command: python3 /stable-diffusion-comfyui/main.py --listen --disable-auto-launch ; git config --global --add safe.directory /stable-diffusion-comfyui
+    ports:
+      - "8188:8188"
+    volumes:
+      - ${OUTPUT_PATH}:/stable-diffusion-comfyui/output:rw
+      - ${MODELS_PATH}/Stable-diffusion:/stable-diffusion-comfyui/models/checkpoints:rw
+      - ${MODELS_PATH}/Lora:/stable-diffusion-comfyui/models/loras:rw
+      - ${MODELS_PATH}/ESRGAN:/stable-diffusion-comfyui/models/upscale_models:rw
+      - ${MODELS_PATH}/ControlNet:/stable-diffusion-comfyui/models/controlnet:rw
+      - ${MODELS_PATH}/embeddings:/stable-diffusion-comfyui/models/embeddings:rw
+      - ${MODELS_PATH}/VAE:/stable-diffusion-comfyui/models/vae:rw
+      - ${MODELS_PATH}/clip:/stable-diffusion-comfyui/models/clip:rw
+     # - /home/andrew/Desktop/sd-comfy:/stable-diffusion-comfyui:rw
+      - ${MODELS_PATH}/Stable-diffusion/unet:/stable-diffusion-comfyui/models/unet:rw
+      - ${MODELS_PATH}/facerestore_models:/stable-diffusion-comfyui/models/face_restore:rw
+      - ${MODELS_PATH}/facerestore_models:/stable-diffusion-comfyui/models/facerestore_models:rw
+      - ${MODELS_PATH}/ipadapter:/stable-diffusion-comfyui/models/ipadapter:rw
+      - ${MODELS_PATH}/clip_vision:/stable-diffusion-comfyui/models/clip_vision:rw
+      - ${MODELS_PATH}/insightface:/stable-diffusion-comfyui/models/insightface:rw
+      - ${MODELS_PATH}/facedetection:/stable-diffusion-comfyui/models/facedetection:rw
+      - ${MODELS_PATH}/reswapper:/stable-diffusion-comfyui/models/reswapper:rw
+      - ${INPUT_PATH}:/stable-diffusion-comfyui/input:rw
+      - ${MODELS_PATH}/instantid:/stable-diffusion-comfyui/models/instantid:rw
+      - ${MODELS_PATH}/diffusion_models:/stable-diffusion-comfyui/models/diffusion_models:rw
+      - ${MODELS_PATH}/text_encoders:/stable-diffusion-comfyui/models/text_encoders:rw
+      #- ${CUSTOM_NODE}:/stable-diffusion-comfyui/custom_nodes:rw
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: on-failure
