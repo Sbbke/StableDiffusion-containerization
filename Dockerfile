@@ -11,40 +11,102 @@ RUN apt update && apt install -y python3 python3-pip git wget curl aria2 nano vi
 RUN apt install -y libgl1 libglib2.0-0
 RUN apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install torch torchvision torchaudio
-RUN pip3 install -U xformers --index-url https://download.pytorch.org/whl/cu121
+#torch environment
+RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
 RUN pip3 install git+https://github.com/openai/CLIP.git
 RUN pip3 install open_clip_torch
 
-# RUN git clone https://github.com/anapnoe/stable-diffusion-webui-ux.git /stable-diffusion-webui
-# RUN git clone https://github.com/zixaphir/Stable-Diffusion-Webui-Civitai-Helper.git /stable-diffusion-webui/extensions/Stable-Diffusion-Webui-Civitai-Helper
-# RUN aria2c -d /stable-diffusion-webui/models/Stable-diffusion/ -o ChilloutMix-FP32-Fix.safetensors "https://civitai-delivery-worker-prod-2023-11-01.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/76164/model/chilloutmixNiPruned.Tw1O.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22chilloutmix_NiPrunedFp32Fix.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20231111/us-east-1/s3/aws4_request&X-Amz-Date=20231111T121656Z&X-Amz-SignedHeaders=host&X-Amz-Signature=2158177dc5bb1fd08124ae52cea673ddefda1dc4a4e9422ea0aa068dfdef9648"
-# RUN aria2c -d /stable-diffusion-webui/models/Stable-diffusion/ -o ChilloutMix-FP32-Fix.preview.jpeg "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/20fcc1d7-29ce-42d8-1502-02c4e50e9100/width=450/174703.jpeg"
-
+# checking environment requirements
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /stable-diffusion-comfyui
 WORKDIR /stable-diffusion-comfyui
-RUN pip3 install -r /stable-diffusion-comfyui/requirements.txt
+RUN pip3 install -r requirements.txt
 RUN pip3 install GitPython
-RUN git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git /stable-diffusion-comfyui/custom_nodes/ComfyUI-Impact-Pack
-RUN python3 /stable-diffusion-comfyui/custom_nodes/ComfyUI-Impact-Pack/install.py
-RUN git clone https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git /stable-diffusion-comfyui/custom_nodes/ComfyUI-AnimateDiff-Evolved
 
 RUN apt update && apt upgrade -y
 RUN apt install -y ffmpeg
 
-RUN pip3 install numba numexpr simpleeval facexlib insightface basicsr
-RUN pip3 install piexif openmim segment-anything ultralytics scikit-image 
+#RUN pip3 install numba numexpr simpleeval facexlib insightface basicsr
+#RUN pip3 install piexif openmim segment-anything ultralytics scikit-image 
 
-RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git /stable-diffusion-comfyui/custom_nodes/was-node-suite-comfyui
-RUN pip3 install -r /stable-diffusion-comfyui/custom_nodes/was-node-suite-comfyui/requirements.txt
-
+# essential custom nodes
 WORKDIR /stable-diffusion-comfyui/custom_nodes
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git
-RUN pip3 install -r ComfyUI-Manager/requirements.txt
-RUN git clone https://github.com/kijai/ComfyUI-ADMotionDirector.git 
-RUN pip3 install -r ComfyUI-ADMotionDirector/requirements.txt
+### motion lora training
+#RUN git clone https://github.com/kijai/ComfyUI-ADMotionDirector.git 
+#RUN pip3 install -r ComfyUI-ADMotionDirector/requirements.txt
+
+### performance monitoring
 RUN git clone https://github.com/crystian/ComfyUI-Crystools.git
 RUN pip3 install -r ComfyUI-Crystools/requirements.txt
+
+### comfyui impact pack
+RUN git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git 
+RUN pip3 install -r ComfyUI-Impact-Pack/requirements.txt
+
+### animatediff evolved
+RUN git clone https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git ComfyUI-AnimateDiff-Evolved
+
+### comfyui manager
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager ComfyUI-Manager
+RUN pip3 install -r ComfyUI-Manager/requirements.txt
 # RUN python3 /stable-diffusion-webui/launch.py --no-download-sd-model --skip-torch-cuda-test --exit
 
+### was node suite
+RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git 
+RUN pip3 install -r was-node-suite-comfyui/requirements.txt
+
+### reactor node
+RUN git clone https://codeberg.org/Gourieff/comfyui-reactor-node.git ComfyUI-ReActor
+RUN pip3 install -r ComfyUI-ReActor/requirements.txt
+RUN pip3 install onnxruntime-gpu
+
+### IPadapter
+RUN git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+RUN pip3 install insightface
 # CMD python3 /stable-diffusion-webui/webui.py --listen --xformers --no-download-sd-model --enable-insecure-extension-access --api
+RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+RUN git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
+
+RUN git clone https://github.com/rgthree/rgthree-comfy.git
+
+RUN git clone https://github.com/cubiq/ComfyUI_FaceAnalysis.git
+RUN pip3 install -r ComfyUI_FaceAnalysis/requirements.txt
+
+RUN git clone https://github.com/cubiq/ComfyUI_InstantID.git
+RUN pip3 install -r ComfyUI_InstantID/requirements.txt
+
+RUN git clone https://github.com/farizrifqi/ComfyUI-Image-Saver.git
+RUN pip3 install -r ComfyUI-Image-Saver/requirements.txt
+
+RUN git clone https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+RUN pip3 install -r ComfyUI-Impact-Subpack/requirements.txt
+
+RUN git clone https://github.com/city96/ComfyUI-GGUF.git
+RUN pip3 install -r ComfyUI-GGUF/requirements.txt
+
+RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git
+RUN pip3 install -r comfyui_controlnet_aux/requirements.txt
+
+RUN git clone https://github.com/cubiq/ComfyUI_essentials.git
+RUN pip3 install -r ComfyUI_essentials/requirements.txt
+
+RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git
+RUN pip3 install -r ComfyUI-KJNodes/requirements.txt
+
+RUN git clone https://github.com/JPS-GER/ComfyUI_JPS-Nodes.git
+
+### for wan video
+RUN git clone https://github.com/FlyingFireCo/tiled_ksampler.git
+
+RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git
+RUN pip3 install -r ComfyUI-WanVideoWrapper/requirements.txt
+
+RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+RUN pip3 install -r ComfyUI-VideoHelperSuite/requirements.txt
+
+### for flux
+RUN git clone https://github.com/lldacing/ComfyUI_PuLID_Flux_ll.git
+RUN pip3 install -r ComfyUI_PuLID_Flux_ll/requirements.txt
+
+RUN git clone https://github.com/jags111/efficiency-nodes-comfyui.git
+RUN pip3 install -r efficiency-nodes-comfyui/requirements.txt
+RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
