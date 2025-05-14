@@ -6,7 +6,7 @@
     ports:
       - "8188:8188"
     volumes:
-      - ${OUTPUT_PATH}:/stable-diffusion-comfyui/output:rw
+      # - ${OUTPUT_PATH}:/stable-diffusion-comfyui/output:rw
       - ${MODELS_PATH}/Stable-diffusion:/stable-diffusion-comfyui/models/checkpoints:rw
       - ${MODELS_PATH}/Lora:/stable-diffusion-comfyui/models/loras:rw
       - ${MODELS_PATH}/ESRGAN:/stable-diffusion-comfyui/models/upscale_models:rw
@@ -15,7 +15,7 @@
       - ${MODELS_PATH}/VAE:/stable-diffusion-comfyui/models/vae:rw
       - ${MODELS_PATH}/clip:/stable-diffusion-comfyui/models/clip:rw
      # - /home/andrew/Desktop/sd-comfy:/stable-diffusion-comfyui:rw
-      - ${MODELS_PATH}/Stable-diffusion/unet:/stable-diffusion-comfyui/models/unet:rw
+      - ${MODELS_PATH}/Stable-diffusion/Wan:/stable-diffusion-comfyui/models/unet:rw
       - ${MODELS_PATH}/facerestore_models:/stable-diffusion-comfyui/models/face_restore:rw
       - ${MODELS_PATH}/facerestore_models:/stable-diffusion-comfyui/models/facerestore_models:rw
       - ${MODELS_PATH}/ipadapter:/stable-diffusion-comfyui/models/ipadapter:rw
@@ -25,8 +25,9 @@
       - ${MODELS_PATH}/reswapper:/stable-diffusion-comfyui/models/reswapper:rw
       - ${INPUT_PATH}:/stable-diffusion-comfyui/input:rw
       - ${MODELS_PATH}/instantid:/stable-diffusion-comfyui/models/instantid:rw
-      - ${MODELS_PATH}/diffusion_models:/stable-diffusion-comfyui/models/diffusion_models:rw
+      # - ${MODELS_PATH}/Stable-diffusion/Wan:/stable-diffusion-comfyui/models/diffusion_models:rw
       - ${MODELS_PATH}/text_encoders:/stable-diffusion-comfyui/models/text_encoders:rw
+      - ${MODELS_PATH}/wildcards:/stable-diffusion-comfyui/custom_nodes/ComfyUI-Impact-Pack/wildcards:rw
       #- ${CUSTOM_NODE}:/stable-diffusion-comfyui/custom_nodes:rw
     deploy:
       resources:

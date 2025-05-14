@@ -1,20 +1,6 @@
-FROM ubuntu:22.04
+FROM library:comfy-base:ubuntu2204
 
 EXPOSE 7860
-
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TORCH_COMMAND="pip install torch torchvision"
-
-RUN sed -i 's|http://archive.ubuntu.com/ubuntu|http://free.nchc.org.tw/ubuntu|' /etc/apt/sources.list
-RUN apt update && apt install -y python3 python3-pip git wget curl aria2 nano vim clang lldb lld pciutils google-perftools
-RUN apt install -y libgl1 libglib2.0-0
-RUN apt-get install -y wget && rm -rf /var/lib/apt/lists/*
-
-#torch environment
-RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
-RUN pip3 install git+https://github.com/openai/CLIP.git
-RUN pip3 install open_clip_torch
 
 # checking environment requirements
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /stable-diffusion-comfyui
@@ -103,6 +89,23 @@ RUN pip3 install -r ComfyUI-WanVideoWrapper/requirements.txt
 RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 RUN pip3 install -r ComfyUI-VideoHelperSuite/requirements.txt
 
+RUN git clone https://github.com/calcuis/gguf.git
+# RUN git clone https://github.com/city96/ComfyUI-GGUF
+# RUN pip3 install -r ComfyUI-GGUF\requirements.txt
+
+RUN git clone https://github.com/Smirnov75/ComfyUI-mxToolkit.git
+
+RUN git clone https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+RUN python3 ComfyUI-Frame-Interpolation/install.py
+
+RUN git clone https://github.com/kijai/ComfyUI-Florence2.git
+RUN pip3 install -r ComfyUI-Florence2/requirements.txt
+
+RUN git clone https://github.com/yolain/ComfyUI-Easy-Use.git
+RUN pip3 install -r ComfyUI-Easy-Use/requirements.txt
+
+RUN git clone https://github.com/yuvraj108c/ComfyUI-Upscaler-Tensorrt.git
+RUN pip3 install -r ComfyUI-Upscaler-Tensorrt/requirements.txt
 ### for flux
 RUN git clone https://github.com/lldacing/ComfyUI_PuLID_Flux_ll.git
 RUN pip3 install -r ComfyUI_PuLID_Flux_ll/requirements.txt
