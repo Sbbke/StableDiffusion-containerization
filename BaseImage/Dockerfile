@@ -1,4 +1,5 @@
-FROM nvidia/cuda:12.6.0-cudnn8-devel-ubuntu22.04
+# syntax=docker/dockerfile:1.14.0-labs
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04
 
 EXPOSE 7860
 
@@ -18,5 +19,4 @@ RUN pip3 install open_clip_torch
 
 RUN pip3 install triton
 RUN git clone https://github.com/thu-ml/SageAttention.git
-ENV FORCE_CUDA="1"
-RUN pip3 install -e SageAttention/.
+RUN --device=nvidia.com/gpu=all pip3 install -e SageAttention/.
