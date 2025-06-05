@@ -1,11 +1,8 @@
-# syntax=docker/dockerfile:1.14.0-labs
 FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04
 
-EXPOSE 7860
 
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TORCH_COMMAND="pip install torch torchvision"
 
 RUN sed -i 's|http://archive.ubuntu.com/ubuntu|http://free.nchc.org.tw/ubuntu|' /etc/apt/sources.list
 RUN apt update && apt install -y python3 python3-pip git wget curl aria2 nano vim clang lldb lld pciutils google-perftools

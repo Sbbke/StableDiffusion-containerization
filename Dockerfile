@@ -7,7 +7,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /stable-diffusion-co
 WORKDIR /stable-diffusion-comfyui
 RUN pip3 install -r requirements.txt
 RUN pip3 install GitPython
-
+RUN pip3 install triton
 RUN apt update && apt upgrade -y
 RUN apt install -y ffmpeg
 
@@ -32,7 +32,7 @@ RUN pip3 install -r ComfyUI-Impact-Pack/requirements.txt
 RUN git clone https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git ComfyUI-AnimateDiff-Evolved
 
 ### comfyui manager
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager ComfyUI-Manager
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager
 RUN pip3 install -r ComfyUI-Manager/requirements.txt
 # RUN python3 /stable-diffusion-webui/launch.py --no-download-sd-model --skip-torch-cuda-test --exit
 
@@ -113,3 +113,7 @@ RUN pip3 install -r ComfyUI_PuLID_Flux_ll/requirements.txt
 RUN git clone https://github.com/jags111/efficiency-nodes-comfyui.git
 RUN pip3 install -r efficiency-nodes-comfyui/requirements.txt
 RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+
+
+RUN git clone https://github.com/thu-ml/SageAttention.git
+RUN --device=nvidia.com/gpu=all pip3 install -e SageAttention/.
