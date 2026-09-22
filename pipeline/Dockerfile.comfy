@@ -1,0 +1,54 @@
+# syntax=docker/dockerfile:1.7
+#
+# Layer 2/3 - ComfyUI core. Rebuild when bumping the ComfyUI version
+# or your own prebuilt wheels (SageAttention, custom_nodes package).
+#
+# Build (standalone, assumes comfy-runtime-base:latest already built/tagged
+# to match the FROM below - or just use `docker buildx bake`, see docker-bake.hcl):
+#   docker tag comfy-runtime-base:cuda12.8-py312 comfy-runtime-base:latest
+#   docker buildx build --load -f Dockerfile.comfy \
+#       --build-arg COMFYUI_COMMIT=<pinned-sha-or-tag> \
+#       -t comfy-base:cuda12.8-py312-comfy .
+
+FROM comfy-runtime-base
+
+# Pinned to the latest STABLE release tag, not master nor latest. Stable tags ship a
+# requirements.txt that's actually tested together (comfy-kitchen, torch,
+# etc all matched) - master can and did break mid-week (see comfy_kitchen
+# 0.2.28 list[int] bug). Check for a newer tag before relying on this long
+# term: https://github.com/Comfy-Org/ComfyUI/tags
+ARG COMFYUI_COMMIT=v0.34.2
+ARG COMFYUI_REPO=https://github.com/Comfy-Org/ComfyUI.git
+
+WORKDIR /stable-diffusion-comfyui
+
+# ---------------------------------------------------------
+# Clone ComfyUI at a pinned ref
+# ---------------------------------------------------------
+RUN git clone ${COMFYUI_REPO} /stable-diffusion-comfyui \
+    && git -C /stable-diffusion-comfyui checkout ${COMFYUI_COMMIT} \
+    && git config --global --add safe.directory '*'
+
+# ---------------------------------------------------------
+# Install ComfyUI requirements
+#
+# No manual package overrides here on purpose - this tag's requirements.txt
+# already pins a self-consistent comfy-kitchen version, tested against this
+# exact ComfyUI commit. Hand-pinning individual packages on top of a stable
+# tag just reintroduces the same mismatch problem master gave us.
+# ---------------------------------------------------------
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install -r requirements.txt
+
+# ---------------------------------------------------------
+# Your prebuilt wheels (disabled - uncomment + add files to dist/ to use)
+# ---------------------------------------------------------
+# COPY dist/sageattention-*.whl dist/custom_nodes-*.whl /tmp/wheels/
+# RUN --mount=type=cache,target=/root/.cache/uv \
+#     uv pip install /tmp/wheels/*.whl \
+#     && rm -rf /tmp/wheels
+
+WORKDIR /stable-diffusion-comfyui
+
+LABEL org.opencontainers.image.title="comfy-base" \
+      org.opencontainers.image.description="ComfyUI core, pinned commit ${COMFYUI_COMMIT}"

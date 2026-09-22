@@ -1,0 +1,72 @@
+# Custom node manifest.
+# Format:  repo_url | target_dir_name | ref
+#
+# ref = HEAD means "whatever the repo's default branch currently is" -
+# i.e. the exact behavior of the original script. Left as HEAD everywhere
+# below since no refs were pinned in the source script. Recommend pinning
+# each one (tag or commit sha) as you confirm a working combination, so a
+# rebuild six months from now still gets the version you tested.
+#
+# Lines commented out here were commented out in the original script too -
+# uncomment to enable.
+
+https://github.com/Merserk/ComfyUI-PiD.git | ComfyUI-PiD | HEAD
+# https://github.com/princepainter/ComfyUI-PainterLongVideo.git | ComfyUI-PainterLongVideo | HEAD
+# https://github.com/princepainter/ComfyUI-PainterI2V.git | ComfyUI-PainterI2V | HEAD
+https://github.com/crystian/ComfyUI-Crystools.git | ComfyUI-Crystools | HEAD
+https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git | ComfyUI-Custom-Scripts | HEAD
+https://github.com/yolain/ComfyUI-Easy-Use.git | ComfyUI-Easy-Use | HEAD
+# https://github.com/kijai/ComfyUI-Florence2.git | ComfyUI-Florence2 | HEAD
+https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git | ComfyUI-Frame-Interpolation | HEAD
+# https://github.com/kijai/ComfyUI-FramePackWrapper.git | ComfyUI-FramePackWrapper | HEAD
+https://github.com/city96/ComfyUI-GGUF.git | ComfyUI-GGUF | HEAD
+https://github.com/farizrifqi/ComfyUI-Image-Saver.git | ComfyUI-Image-Saver | HEAD
+https://github.com/ltdrdata/ComfyUI-Impact-Pack.git | ComfyUI-Impact-Pack | HEAD
+https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git | ComfyUI-Impact-Subpack | HEAD
+https://github.com/kijai/ComfyUI-KJNodes.git | ComfyUI-KJNodes | HEAD
+https://github.com/Comfy-Org/ComfyUI-Manager.git | ComfyUI-Manager | HEAD
+https://github.com/Gourieff/ComfyUI-ReActor.git | ComfyUI-ReActor | HEAD
+https://github.com/yuvraj108c/ComfyUI-Upscaler-Tensorrt.git | ComfyUI-Upscaler-Tensorrt | HEAD
+https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git | ComfyUI-VideoHelperSuite | HEAD
+https://github.com/kijai/ComfyUI-WanVideoWrapper.git | ComfyUI-WanVideoWrapper | HEAD
+https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git | ComfyUI_Comfyroll_CustomNodes | HEAD
+https://github.com/cubiq/ComfyUI_IPAdapter_plus.git | ComfyUI_IPAdapter_plus | HEAD
+https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git | ComfyUI_UltimateSDUpscale | HEAD
+https://github.com/cubiq/ComfyUI_essentials.git | ComfyUI_essentials | HEAD
+https://github.com/rgthree/rgthree-comfy.git | rgthree-comfy | HEAD
+https://github.com/FlyingFireCo/tiled_ksampler.git | tiled_ksampler | HEAD
+https://github.com/ltdrdata/was-node-suite-comfyui.git | was-node-suite-comfyui | HEAD
+# https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git | ComfyUI-AnimateDiff-Evolved | HEAD
+https://github.com/jags111/efficiency-nodes-comfyui.git | efficiency-nodes-comfyui | HEAD
+# https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git | sd-dynamic-thresholding | HEAD
+# https://github.com/Fannovel16/comfyui_controlnet_aux.git | comfyui_controlnet_aux | HEAD
+# https://github.com/Jonseed/ComfyUI-Detail-Daemon.git | ComfyUI-Detail-Daemon | HEAD
+https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git | ComfyUI-Inspire-Pack | HEAD
+# https://github.com/sipherxyz/comfyui-art-venture.git | comfyui-art-venture | HEAD
+# https://github.com/pamparamm/ComfyUI-ppm.git | ComfyUI-ppm | HEAD
+# https://github.com/Layer-norm/comfyui-lama-remover.git | comfyui-lama-remover | HEAD
+https://github.com/evanspearman/ComfyMath.git | ComfyMath | HEAD
+https://github.com/JPS-GER/ComfyUI_JPS-Nodes.git | ComfyUI_JPS-Nodes | HEAD
+# https://github.com/xhiroga/ComfyUI-FramePackWrapper_PlusOne.git | ComfyUI-FramePackWrapper_PlusOne | HEAD
+https://github.com/ShmuelRonen/ComfyUI-FreeMemory.git | ComfyUI-FreeMemory | HEAD
+# https://github.com/orssorbit/ComfyUI-wanBlockswap.git | ComfyUI-wanBlockswap | HEAD
+https://github.com/jamesWalker55/comfyui-various.git | comfyui-various | HEAD
+https://github.com/Smirnov75/ComfyUI-mxToolkit.git | ComfyUI-mxToolkit | HEAD
+https://github.com/danTheMonk/comfyui-int-and-float.git | comfyui-int-and-float | HEAD
+
+#//----------------For Wan Upscale----------------------//#
+# https://github.com/mav-rik/facerestore_cf.git | facerestore_cf | HEAD
+
+#//--------------- SeedVR2 video upscale ----------//#
+https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git | ComfyUI-SeedVR2_VideoUpscaler | HEAD
+
+#//-----------------For Anima Style Transfer Workflow---------------//#
+# https://github.com/Mirumo0u0/ComfyUI-Cosmos-Reference.git | ComfyUI-Cosmos-Reference | HEAD
+# https://github.com/asagi4/comfyui-prompt-control.git | comfyui-prompt-control | HEAD
+# https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git | ComfyUi-Scale-Image-to-Total-Pixels-Advanced | HEAD
+
+#//---------------------MiniMax=======================//#
+https://github.com/xmarre/ComfyUI-Spectrum-MiniMax-H3.git | ComfyUI-Spectrum-MiniMax-H3 | HEAD
+https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler.git | Comfyui_Minimax_h3_latent_Upscaler | HEAD
+https://github.com/bbaudio-2025/Comfyui-MMH3-UltimateUpscale.git | Comfyui-MMH3-UltimateUpscale | HEAD
+https://github.com/seitanism/ComfyUI-H3-Motion-Context-MultiRef.git | ComfyUI-H3-Motion-Context-MultiRef | HEAD

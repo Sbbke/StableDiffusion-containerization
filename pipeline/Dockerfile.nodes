@@ -1,0 +1,50 @@
+# syntax=docker/dockerfile:1.7
+#
+# Layer 3/3 - your custom node set. This is the one you'll rebuild most
+# often. Editing custom_nodes.txt (bumping a ref, adding a node) is what
+# should invalidate this layer - Dockerfile.base and Dockerfile.comfy stay
+# cached untouched.
+#
+# Build (standalone, assumes comfy-base:latest already built/tagged to
+# match the FROM below - or just use `docker buildx bake`, see docker-bake.hcl):
+#   docker tag comfy-base:cuda12.8-py312-comfy comfy-base:latest
+#   docker buildx build --load -f Dockerfile.nodes -t comfy-custom:$(date +%Y-%m-%d) .
+
+FROM comfy-base
+
+WORKDIR /stable-diffusion-comfyui/custom_nodes
+
+# Freeze the exact versions Dockerfile.base/Dockerfile.comfy installed
+# (torch, numpy, pillow, etc.) BEFORE any custom node requirements.txt
+# gets a chance to touch the venv. clone-repos.sh passes this to every
+# `uv pip install` as a --constraint file, so a node can add whatever new
+# packages it needs but can't silently upgrade/downgrade something another
+# node (or ComfyUI core) already depends on. Without this, uv resolves
+# each node's requirements.txt in isolation and will happily change an
+# already-installed package to satisfy the node being processed - it
+# builds fine, but an earlier node now runs against a version it wasn't
+# written for and throws AttributeError at launch instead of build time.
+RUN uv pip freeze > /constraints.txt
+
+COPY clone-repos.sh /clone-repos.sh
+COPY custom_nodes.txt /manifest/custom_nodes.txt
+RUN chmod +x /clone-repos.sh
+
+# STRICT=1 to fail the build instead of skipping a broken node -
+# override with --build-arg STRICT=1 for CI/release builds.
+ARG STRICT=0
+
+RUN --mount=type=cache,id=comfyui-custom-nodes,target=/cache/comfyui-custom-nodes \
+    --mount=type=cache,id=comfyui-uv,target=/root/.cache/uv \
+    STRICT=${STRICT} CONSTRAINTS_FILE=/constraints.txt bash /clone-repos.sh /manifest/custom_nodes.txt
+
+WORKDIR /stable-diffusion-comfyui
+
+EXPOSE 8188
+
+# NOTE: no CMD/ENTRYPOINT here on purpose - add one if this is meant to
+# run standalone, e.g.:
+# CMD ["python3", "main.py", "--listen", "0.0.0.0", "--port", "8188"]
+
+LABEL org.opencontainers.image.title="comfy-custom" \
+      org.opencontainers.image.description="ComfyUI + pinned custom node set"
